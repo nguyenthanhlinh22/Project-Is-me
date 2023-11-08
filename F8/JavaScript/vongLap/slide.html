@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Slider</title>
+    <style>
+        /* CSS để tạo giao diện Image Slider */
+        .slider-container {
+            width: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        
+        .slide {
+            width: 400px;
+            height: 200px;
+        }
+        
+        .slider-button {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Slider</h1>
+    
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <div class="slide"><img src="img/slide1.png" alt="Image 1"></div>
+            <div class="slide"><img src="img/slide2.jpg" alt="Image 2"></div>
+            <div class="slide"><img src="img/slide4.png" alt="Image 3"></div>
+        </div>
+    </div>
+    
+    <button class="slider-button" id="prev-button">Previous</button>
+    <button class="slider-button" id="next-button">Next</button>
+
+    <script>
+        // Lấy các phần tử và thực hiện logic Slider
+        var slider = document.getElementById("slider");
+        var slides = document.querySelectorAll(".slide");
+        var prevButton = document.getElementById("prev-button");
+        var nextButton = document.getElementById("next-button");
+        var slideIndex = 0;
+
+        // Hàm để chuyển đổi slide tiếp theo
+        function nextSlide() {
+            slideIndex = (slideIndex + 1) % slides.length;
+            updateSlider();
+        }
+
+        // Hàm để chuyển đổi slide trước đó
+        function prevSlide() {
+            slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+            updateSlider();
+        }
+
+        // Hàm để cập nhật trạng thái của Slider
+        function updateSlider() {
+            slider.style.transform = `translateX(-${slideIndex * 400}px)`;
+        }
+
+        // Thiết lập sự kiện cho nút điều hướng
+        nextButton.addEventListener("click", nextSlide);
+        prevButton.addEventListener("click", prevSlide);
+
+        // Tự động chạy Slider mỗi 3 giây
+        setInterval(nextSlide, 3000);
+    </script>
+</body>
+</html>

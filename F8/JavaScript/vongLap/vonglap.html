@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* CSS cho slider */
+        #slider {
+            width: 100%; /* Sử dụng chiều rộng 100% để thích ứng với kích thước trình duyệt */
+            max-width: 1440px; /* Giới hạn chiều rộng tối đa */
+            height: 700px;
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .list {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            display: flex;
+            transition: 1s;
+        }
+
+        .list img {
+            width: 100%; /* Thay đổi chiều rộng của ảnh để thích ứng */
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #slider .buttons {
+            position: absolute;
+            top: 45%;
+            left: 5%;
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #slider .buttons button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50px;
+            background-color: #fff5;
+            color: #fff;
+            border: none;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        #slider #dots {
+            position: absolute;
+            bottom: 10px;
+            color: #fff;
+            left: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        #slider #dots>li {
+            list-style: none;
+            width: 10px;
+            height: 10px;
+            background-color: #fff;
+            margin: 0 20px; /* Thay đổi khoảng cách giữa các nút */
+            border-radius: 50%; /* Đổi giá trị từ 20px thành 50% để tạo nút tròn */
+        }
+
+        #slider #dots li.active {
+            width: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- slider -->
+    <div id="slider">
+        <div class="list">
+            <div class="item">
+                <img src="img/slide1.png" alt="">
+            </div>
+            <div class="item">
+                <img src="img/slide2.jpg" alt="">
+            </div>
+            <div class="item">
+                <img src="img/slide3.png" alt="">
+            </div>
+            <div class="item">
+                <img src="img/slide4.png" alt="">
+            </div>
+        </div>
+        <!-- buttons -->
+        <div class="buttons">
+            <button id="prev">Previous</button>
+            <button id="next">Next</button>
+        </div>
+        <!-- nút hiện 4 item -->
+        <ul id="dots">
+            <li class="active"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <script>
+        let slider = document.getElementById("slider"); // Thêm ID cho slider
+        let list = document.querySelector('#slider .list');
+        let item = document.querySelectorAll('#slider .list .item');
+        let dots = document.querySelectorAll('#slider #dots li');
+        let prev = document.getElementById("prev");
+        let next = document.getElementById("next");
+        
+        let active = 0;
+        let lengthItem = item.length - 1;
+
+        function nextSlide() {
+            if (active + 1 > lengthItem) {
+                active = 0;
+            } else {
+                active += 1;
+            }
+            reloadSlider();
+        }
+
+        function prevSlide() {
+            if (active - 1 < 0) {
+                active = lengthItem;
+            } else {
+                active -= 1;
+            }
+            reloadSlider();
+        }
+
+        function autoSlide() {
+            nextSlide();
+        }
+
+        next.onclick = nextSlide;
+        prev.onclick = prevSlide;
+
+        for (let i = 0; i < dots.length; i++) {
+            dots[i].addEventListener("click", function() {
+                active = i;
+                reloadSlider();
+            });
+        }
+
+        function reloadSlider() {
+            let checkLeft = item[active].offsetLeft;
+            list.style.transform = `translateX(-${checkLeft}px)`;
+
+            let lastActiveDot = document.querySelector('#slider #dots li.active');
+            lastActiveDot.classList.remove('active');
+            dots[active].classList.add('active');
+        }
+
+        // Thiết lập tự đ
